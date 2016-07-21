@@ -1,0 +1,253 @@
+<%#
+kind: snippet
+name: ssh-defaults
+%>
+
+# https://www.kb.cert.org/vuls/id/958563
+# https://access.redhat.com/solutions/420283
+# https://benchmarks.cisecurity.org/
+
+# name "Scored | 5.2.1  | Ensure permissions on /etc/ssh/sshd_config are configured
+# name "Scored | 5.2.2  | Ensure SSH protocol is set to 2
+# name "Scored | 5.2.3  | Ensure SSH LogLevel is set to info
+# name "Scored | 5.2.5  | Ensure MaxAuthTries is set to 4 or less
+# name "Scored | 5.2.6  | Ensure IgnoreRhosts is enabled
+# name "Scored | 5.2.8  | Ensure root login is disabled
+# name "Scored | 5.2.9  | Ensure SSH PermitEmptyPasswords is disabled
+# name "Scored | 5.2.10 | Ensure SSH PermitUserEnvironment is disabled
+# name "Scored | 5.2.11 | Ensure only approved ciphers are used
+# name "Scored | 5.2.12 | Ensure only approved MAC algorithms are used
+# name "Scored | 5.2.13 | Ensure SSH idle timeout interval is configured
+# name "Scored | 5.2.14 | Ensure SSH LoginGraceTime is set to one minute or less
+# name "Scored | 5.2.15 | Ensure SSH access is limited
+# name "Scored | 5.2.16 | Ensure SSH warning banner is configured
+
+
+# name "Scored | 5.2.1  | Ensure permissions on /etc/ssh/sshd_config are configured
+chown root:root /etc/ssh/sshd_config
+chmod og-rwx /etc/ssh/sshd_config
+
+tee << EOF >> /etc/ssh/sshd_config
+<<<<<<< HEAD
+=======
+#       $OpenBSD: sshd_config,v 1.80 2008/07/02 02:24:18 djm Exp $
+
+# This is the sshd server system-wide configuration file.  See
+# sshd_config(5) for more information.
+
+# This sshd was compiled with PATH=/usr/local/bin:/bin:/usr/bin
+
+# The strategy used for options in the default sshd_config shipped with
+# OpenSSH is to specify options with their default value where
+# possible, but leave them commented.  Uncommented options change a
+# default value.
+
+#Port 22
+#AddressFamily any
+#ListenAddress 0.0.0.0
+#ListenAddress ::
+
+# name "Scored | 5.2.2  | Ensure SSH protocol is set to 2
+# Disable legacy (protocol version 1) support in the server for new
+# installations. In future the default will change to require explicit
+# activation of protocol 1
+Protocol 2
+
+# name "Scored | 5.2.15 | Ensure SSH access is limited
+# Lock access down to valid users or groups
+# AllowUsers
+AllowGroups
+# DenyUsers
+# DenyGroups
+
+# HostKey for protocol version 1
+#HostKey /etc/ssh/ssh_host_key
+# HostKeys for protocol version 2
+#HostKey /etc/ssh/ssh_host_rsa_key
+#HostKey /etc/ssh/ssh_host_dsa_key
+
+# Lifetime and size of ephemeral version 1 server key
+#KeyRegenerationInterval 1h
+#ServerKeyBits 1024
+
+>>>>>>> 01ceaa8... Added default file
+# Logging
+# obsoletes QuietMode and FascistLogging
+#SyslogFacility AUTH
+SyslogFacility AUTHPRIV
+<<<<<<< HEAD
+# LogLevel DEBUG
+LogLevel INFO
+=======
+LogLevel DEBUG
+# LogLevel INFO
+>>>>>>> 01ceaa8... Added default file
+
+# Ciphers
+# name "Scored | 5.2.11 | Ensure only approved ciphers are used
+# name "Scored | 5.2.12 | Ensure only approved MAC algorithms are used
+# Disable weak encryption algorithms (CentOS 6)
+# https://www.kb.cert.org/vuls/id/958563
+# https://access.redhat.com/solutions/420283
+# https://benchmarks.cisecurity.org/
+Ciphers aes256-ctr,aes192-ctr,aes128-ctr,aes256-cbc,aes192-cbc,aes128-cbc,3des-cbc
+MACs hmac-sha1
+
+<<<<<<< HEAD
+
+ClientAliveInterval 300
+Client AliveCountMax 0
+
+# Authentication:
+
+# name "Scored | 5.2.6  | Ensure IgnoreRhosts is enabled
+# Don't read the user's ~/.rhosts and ~/.shosts files
+IgnoreRhosts yes
+
+=======
+# Authentication:
+
+>>>>>>> 01ceaa8... Added default file
+# name "Scored | 5.2.14 | Ensure SSH LoginGraceTime is set to one minute or less
+# Only allow 1 minute for auth response
+LoginGraceTime 1m
+
+<<<<<<< HEAD
+# name "Scored | 5.2.15 | Ensure SSH access is limited
+# Lock access down to valid users or groups
+# AllowUsers
+AllowGroups
+# DenyUsers
+# DenyGroups
+
+# name "Scored | 5.2.8  | Ensure root login is disabled
+# Don't allow root logins over ssh
+PermitRootLogin no
+=======
+# name "Scored | 5.2.8  | Ensure root login is disabled
+# Don't allow root logins over ssh
+PermitRootLogin no
+#PermitRootLogin yes
+
+# name "Scored | 5.2.5  | Ensure MaxAuthTries is set to 4 or less
+# Limit to 4 tries
+MaxAuthTries 4
+StrictModes yes
+MaxSessions 10
+
+#RSAAuthentication yes
+#PubkeyAuthentication yes
+#AuthorizedKeysFile     .ssh/authorized_keys
+#AuthorizedKeysCommand none
+#AuthorizedKeysCommandRunAs nobody
+
+# For this to work you will also need host keys in /etc/ssh/ssh_known_hosts
+#RhostsRSAAuthentication no
+# similar for protocol version 2
+#HostbasedAuthentication no
+# Change to yes if you don't trust ~/.ssh/known_hosts for
+# RhostsRSAAuthentication and HostbasedAuthentication
+#IgnoreUserKnownHosts no
+# name "Scored | 5.2.6  | Ensure IgnoreRhosts is enabled
+# Don't read the user's ~/.rhosts and ~/.shosts files
+IgnoreRhosts yes
+>>>>>>> 01ceaa8... Added default file
+
+# name "Scored | 5.2.9  | Ensure SSH PermitEmptyPasswords is disabled
+# To disable tunneled clear text passwords, change to no here!
+#PasswordAuthentication yes
+PermitEmptyPasswords no
+PasswordAuthentication yes
+
+<<<<<<< HEAD
+# Enable strict modes
+StrictModes yes
+
+# name "Scored | 5.2.5  | Ensure MaxAuthTries is set to 4 or less
+# Limit to 4 tries
+MaxAuthTries 4
+
+# Limit to 10 sessions per user
+MaxSessions 10
+=======
+# Change to no to disable s/key passwords
+#ChallengeResponseAuthentication yes
+ChallengeResponseAuthentication no
+
+# Kerberos options
+#KerberosAuthentication no
+#KerberosOrLocalPasswd yes
+#KerberosTicketCleanup yes
+#KerberosGetAFSToken no
+#KerberosUseKuserok yes
+
+# GSSAPI options
+#GSSAPIAuthentication no
+GSSAPIAuthentication yes
+#GSSAPICleanupCredentials yes
+GSSAPICleanupCredentials yes
+#GSSAPIStrictAcceptorCheck yes
+#GSSAPIKeyExchange no
+
+# Set this to 'yes' to enable PAM authentication, account processing,
+# and session processing. If this is enabled, PAM authentication will
+# be allowed through the ChallengeResponseAuthentication and
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication via ChallengeResponseAuthentication may bypass
+# the setting of "PermitRootLogin without-password".
+# If you just want the PAM account and session checks to run without
+# PAM authentication, then enable this but set PasswordAuthentication
+# and ChallengeResponseAuthentication to 'no'.
+#UsePAM no
+UsePAM yes
+
+# Accept locale-related environment variables
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+
+AllowAgentForwarding yes
+AllowTcpForwarding yes
+#GatewayPorts no
+X11Forwarding yes
+X11DisplayOffset 10
+X11UseLocalhost yes
+#PrintMotd yes
+#PrintLastLog yes
+#TCPKeepAlive yes
+#UseLogin no
+#UsePrivilegeSeparation yes
+#PermitUserEnvironment no
+#Compression delayed
+#ClientAliveInterval 0
+#ClientAliveCountMax 3
+#ShowPatchLevel no
+#UseDNS yes
+#PidFile /var/run/sshd.pid
+#MaxStartups 10:30:100
+#PermitTunnel no
+#ChrootDirectory none
+
+# no default banner path
+#Banner /etc/banner
+
+# override default of no subsystems
+# comment out to disable sftp
+Subsystem       sftp    /usr/libexec/openssh/sftp-server
+>>>>>>> 01ceaa8... Added default file
+
+# name "Scored | 5.2.10 | Ensure SSH PermitUserEnvironment is disabled
+#PermitUserEnvironment no
+PermitUserEnvironment no
+
+<<<<<<< HEAD
+=======
+# Example of overriding settings on a per-user basis
+#Match User anoncvs
+#       X11Forwarding no
+#       AllowTcpForwarding no
+#       ForceCommand cvs server
+
+>>>>>>> 01ceaa8... Added default file
+EOF
